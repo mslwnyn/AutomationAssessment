@@ -14,13 +14,13 @@
         <protocol>https</protocol>
 
         <!-- title of the document -->
-        <documentTitle>Sample Automation Reports</documentTitle>
+        <documentTitle>ILAB Automation Reports</documentTitle>
 
         <!-- report name - displayed at top-nav -->
-        <reportName>Automation Report</reportName>
+        <reportName>Automation Report: </reportName>
 
         <!-- report headline - displayed at top-nav, after reportHeadline -->
-        <reportHeadline>Headline 1</reportHeadline>
+        <reportHeadline>ILAB Automation Assessment</reportHeadline>
 
         <!-- global date format override -->
         <!-- defaults to yyyy-MM-dd -->

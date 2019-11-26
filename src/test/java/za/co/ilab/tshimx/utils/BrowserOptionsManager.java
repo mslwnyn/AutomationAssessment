@@ -35,6 +35,7 @@ public class BrowserOptionsManager {
         //Use No Proxy Settings
         profile.setPreference("network.proxy.type", 0);
         //Set Firefox profile to capabilities
+        //options.addArguments("--headless");
         options.setCapability(FirefoxDriver.PROFILE, profile);
         return options;
     }

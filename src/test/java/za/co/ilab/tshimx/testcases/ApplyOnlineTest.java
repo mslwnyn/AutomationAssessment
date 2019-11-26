@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.apache.log4j.Logger;
 import za.co.ilab.tshimx.pageobjects.ApplyOnlinePage;
@@ -21,31 +22,36 @@ import za.co.ilab.tshimx.utils.ThreadLocalDriverFactory;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.DataProvider;
 import za.co.ilab.tshimx.utils.ReadExcel;
+import za.co.ilab.tshimx.utils.ThreadLocalExtentReportFactory;
+import za.co.ilab.tshimx.utils.ThreadLocalExtentTestFactory;
 import za.co.ilab.tshimx.utils.domain.Person;
 import za.co.ilab.tshimx.utils.hibernate.HibernateDatabaseAccess;
 
 public class ApplyOnlineTest extends BaseTest {
     final static Logger logger = Logger.getLogger(ApplyOnlineTest.class);
-    @Test
-    public void clickCareersLink() throws Exception {
 
-        extentTest = rep.startTest("clickCareersLink Test");
+    @Parameters({"browser"})
+    @Test
+    public void clickCareersLink(String browser) throws Exception {
+        
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "ApplyOnlineTest: clickCareersLink Test  ");
         logger.info("Starting Test : clickCareersLink ");
-        extentTest.log(LogStatus.INFO, "Starting Test : clickCareersLink ");
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Starting Test : clickCareersLink ");
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "SETUP - Browser : " + browser );
         ThreadLocalDriverFactory.getThreadLocalDriver().navigate().to(env_prop.getProperty("website.url"));
         Thread.sleep(20000);
 
         if (ThreadLocalDriverFactory.getThreadLocalDriver().getTitle().equals("Home Page - iLAB")) {
             Assert.assertTrue(true);
-            extentTest.log(LogStatus.INFO, "Page Title is correct: Home Page - iLAB");
+            ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.PASS, "Page Title is correct: Home Page - iLAB");
         } else {
             Assert.assertTrue(false);
-            extentTest.log(LogStatus.INFO, "Page Title is incorrect. ");
+            ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.FAIL, "Page Title is incorrect. ");
         }
 
         HomePage homePage = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), HomePage.class);
         String screenshotPath = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
-        extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath));
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath));
         String sPath = env_prop.getProperty("datafile_url");
         ReadExcel.setExcelFile(sPath, "homePage");
         for (int iRow = 1; iRow <2; iRow++) {
@@ -55,30 +61,30 @@ public class ApplyOnlineTest extends BaseTest {
             
             execute_Actions(homePage);
         }
-        extentTest.log(LogStatus.INFO, "Link Clicked");
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Link Clicked");
         Thread.sleep(20000);
         logger.info("Ending  Test : clickCareersLink Test");
-
+        ThreadLocalExtentReportFactory.getThreadLocalExtentReport().endTest(ThreadLocalExtentTestFactory.getThreadLocalExtentTest());
     }
 
     @Test(dependsOnMethods = {"clickCareersLink"})
     public void clickSouthAficaLink() throws Exception {
-        
-        extentTest = rep.startTest("clickSouthAficaLink Test");
-        extentTest.log(LogStatus.INFO, "Starting Test : clickCareersLink Test");
+
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO," ApplyOnlineTest: clickSouthAficaLink Test" );
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Starting Test : clickCareersLink Test");
         logger.info("Starting Test : clickCareersLink Test");
         JavascriptExecutor js = (JavascriptExecutor) ThreadLocalDriverFactory.getThreadLocalDriver();
         js.executeScript("window.scrollBy(0,1000)");
         Thread.sleep(20000);
         String screenshotPath = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
-        extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath));
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath));
         Thread.sleep(20000);
         if (ThreadLocalDriverFactory.getThreadLocalDriver().getTitle().equals("CAREERS - iLAB")) {
             Assert.assertTrue(true);
-            extentTest.log(LogStatus.INFO, "Page Title is correct: CAREERS - iLAB");
+            ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.PASS, "Page Title is correct: CAREERS - iLAB");
         } else {
             Assert.assertTrue(false);
-            extentTest.log(LogStatus.INFO, "Page Title is incorrect. ");
+            ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.FAIL, "Page Title is incorrect. ");
         }
         CareersPage careersPage = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), CareersPage.class);
         String sPath = env_prop.getProperty("datafile_url");
@@ -88,106 +94,111 @@ public class ApplyOnlineTest extends BaseTest {
             logger.info("CareersPage : The keyword is " +keyword);
             execute_Actions(careersPage);
         }
-        extentTest.log(LogStatus.INFO, "Link Clicked");
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Link Clicked");
         Thread.sleep(20000);
         logger.info("Ending  Test : clickSouthAficaLink Test");
-    }
-
-
-    @Test(dependsOnMethods = {"clickSouthAficaLink"})
-    public void clickFirstJobLink() throws Exception {
-        extentTest = rep.startTest("clickFirstJobLink Test");
-        extentTest.log(LogStatus.INFO,"Starting Test : clickCareersLink Test");
-        logger.info("Starting Test : clickCareersLink Test");
-        Thread.sleep(20000);
-        String screenshotPath = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
-        extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath));
-        Thread.sleep(20000);
-        if (ThreadLocalDriverFactory.getThreadLocalDriver().getTitle().equals("SOUTH AFRICA - iLAB")) {
-            Assert.assertTrue(true);
-            extentTest.log(LogStatus.INFO, "Page Title is correct: SOUTH AFRICA - iLAB");
-        } else {
-            Assert.assertTrue(false);
-            extentTest.log(LogStatus.INFO, "Page Title is incorrect. ");
-        }
-        SouthAfricaPage southAfricaPage = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), SouthAfricaPage.class);
-        String sPath = env_prop.getProperty("datafile_url");
-        ReadExcel.setExcelFile(sPath, "southafrica_jobs_Page");
-        for (int iRow = 1; iRow <2; iRow++) {
-            keyword = ReadExcel.getCellData(iRow, 1);
-            logger.info("SouthAfricaPage: The keyword is " +keyword);
-            execute_Actions(southAfricaPage);
-        }
-        extentTest.log(LogStatus.INFO, "Link Clicked");
-        Thread.sleep(20000);
-        logger.info("Ending  Test : clickFirstJobLink Test");
-    }
-
-    @Test(dependsOnMethods = {"clickFirstJobLink"})
-    public void clickApplyOnlineLink() throws Exception {
-
-        extentTest = rep.startTest("clickApplyOnlineLink Test");
-        extentTest.log(LogStatus.INFO,"Starting Test : clickApplyOnlineLink Test");
-        logger.info("Starting Test : clickApplyOnlineLink Test");
-        String screenshotPath = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
-        extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath));
-        Thread.sleep(20000);
-        JavascriptExecutor js = (JavascriptExecutor) ThreadLocalDriverFactory.getThreadLocalDriver();
-        js.executeScript("window.scrollBy(0,1000)");
-        Thread.sleep(20000);
-        String screenshotPath1 = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
-        extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath1));
-        Thread.sleep(20000);
-        extentTest.log(LogStatus.INFO, "Page Title is : " + ThreadLocalDriverFactory.getThreadLocalDriver().getTitle());
-        ApplyOnlinePage applyOnlinePage = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), ApplyOnlinePage.class);
-        String sPath = env_prop.getProperty("datafile_url");
-        ReadExcel.setExcelFile(sPath, "apply_online_page");
-        for (int iRow = 1; iRow <2; iRow++) {
-            keyword = ReadExcel.getCellData(iRow, 1);
-            logger.info("ApplyOnlinePage: The keyword is " +keyword);
-            execute_Actions(applyOnlinePage);
-        }        
-        extentTest.log(LogStatus.INFO, "Link Clicked");
-        Thread.sleep(20000);
-        logger.info("Ending  Test : clickApplyOnlineLink Test");
-    }
-
-    @Test(dataProvider = "data", dependsOnMethods = {"clickApplyOnlineLink"})
-    public void fillTheApplyOnlineForm(String name,String email) throws Exception {
-        extentTest = rep.startTest("fillTheApplyOnlineForm Test");
-        extentTest.log(LogStatus.INFO, "Starting Test : fillTheApplyOnlineForm Test");
-        logger.info("Starting Test : fillTheApplyOnlineForm Test");
-        Thread.sleep(20000);
-        String screenshotPath2 = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
-        extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath2));
-        Thread.sleep(20000);
-        extentTest.log(LogStatus.INFO, "Page Title is : " + ThreadLocalDriverFactory.getThreadLocalDriver().getTitle());
-        ApplyOnlinePage applyOnlinePage2 = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), ApplyOnlinePage.class);
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Ending  Test : clickSouthAficaLink Test");
         
-            applyOnlinePage2.inputName(name);
-            applyOnlinePage2.inputEmail(email);
-            applyOnlinePage2.inputPhoneNumber();
-            Thread.sleep(20000);
-            applyOnlinePage2.clickSendApplication();
-        
-        Thread.sleep(20000);
-        String screenshotPath3 = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
-        extentTest.log(LogStatus.PASS, extentTest.addScreenCapture(screenshotPath3));
-        Thread.sleep(20000);
-
-        if (applyOnlinePage2.getErrorMessage().equals("You need to upload at least one file")) {
-            extentTest.log(LogStatus.PASS, "Error Message Exists");
-            Assert.assertTrue(true);
-
-        } else {
-            extentTest.log(LogStatus.FAIL, "Different Error Message exists: " + applyOnlinePage2.getErrorMessage());
-            Assert.assertTrue(false);
-        }
-        extentTest.log(LogStatus.INFO, "Link Clicked");
-        Thread.sleep(20000);
-        logger.info("Ending  Test : fillTheApplyOnlineForm Test");
     }
+
+
+       @Test(dependsOnMethods = {"clickSouthAficaLink"})
+       public void clickFirstJobLink() throws Exception {
+          
+           ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO,"ApplyOnlineTest: clickFirstJobLink Test " );
+           ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Starting Test : clickSouthAficaLink Test");
+           logger.info("Starting Test : clickCareersLink Test");
+           Thread.sleep(20000);
+           String screenshotPath = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
+           ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath));
+           Thread.sleep(20000);
+           if (ThreadLocalDriverFactory.getThreadLocalDriver().getTitle().equals("SOUTH AFRICA - iLAB")) {
+               Assert.assertTrue(true);
+               ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.PASS, "Page Title is correct: SOUTH AFRICA - iLAB");
+           } else {
+               Assert.assertTrue(false);
+               ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.FAIL, "Page Title is incorrect. ");
+           }
+           SouthAfricaPage southAfricaPage = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), SouthAfricaPage.class);
+           String sPath = env_prop.getProperty("datafile_url");
+           ReadExcel.setExcelFile(sPath, "southafrica_jobs_Page");
+           for (int iRow = 1; iRow <2; iRow++) {
+               keyword = ReadExcel.getCellData(iRow, 1);
+               logger.info("SouthAfricaPage: The keyword is " +keyword);
+               execute_Actions(southAfricaPage);
+           }
+           ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Link Clicked");
+           Thread.sleep(20000);
+           logger.info("Ending  Test : clickFirstJobLink Test");
+           ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Ending  Test : clickFirstJobLink Test");
+       }
     
+          @Test(dependsOnMethods = {"clickFirstJobLink"})
+          public void clickApplyOnlineLink() throws Exception {
+
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO,"ApplyOnlineTest: clickApplyOnlineLink Test " );
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "ApplyOnlineTest: clickApplyOnlineLink Test ");
+              logger.info("Starting Test : clickApplyOnlineLink Test");
+              String screenshotPath = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath));
+              Thread.sleep(20000);
+              JavascriptExecutor js = (JavascriptExecutor) ThreadLocalDriverFactory.getThreadLocalDriver();
+              js.executeScript("window.scrollBy(0,1000)");
+              Thread.sleep(20000);
+              String screenshotPath1 = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath1));
+              Thread.sleep(20000);
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Page Title is : " + ThreadLocalDriverFactory.getThreadLocalDriver().getTitle());
+              ApplyOnlinePage applyOnlinePage = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), ApplyOnlinePage.class);
+              String sPath = env_prop.getProperty("datafile_url");
+              ReadExcel.setExcelFile(sPath, "apply_online_page");
+              for (int iRow = 1; iRow <2; iRow++) {
+                  keyword = ReadExcel.getCellData(iRow, 1);
+                  logger.info("ApplyOnlinePage: The keyword is " +keyword);
+                  execute_Actions(applyOnlinePage);
+              }
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Link Clicked");
+              Thread.sleep(20000);
+              logger.info("Ending  Test : clickApplyOnlineLink Test");
+          }
+
+          @Test(dataProvider = "data", dependsOnMethods = {"clickApplyOnlineLink"})
+          public void fillTheApplyOnlineForm(String name,String email) throws Exception {
+
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO,"ApplyOnlineTest: fillTheApplyOnlineForm Test ");
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO,"ApplyOnlineTest: fillTheApplyOnlineForm Test ");
+              logger.info("Starting Test : fillTheApplyOnlineForm Test");
+              Thread.sleep(20000);
+              String screenshotPath2 = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath2));
+              Thread.sleep(20000);
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Page Title is : " + ThreadLocalDriverFactory.getThreadLocalDriver().getTitle());
+              ApplyOnlinePage applyOnlinePage2 = PageFactory.initElements(ThreadLocalDriverFactory.getThreadLocalDriver(), ApplyOnlinePage.class);
+
+                  applyOnlinePage2.inputName(name);
+                  applyOnlinePage2.inputEmail(email);
+                  applyOnlinePage2.inputPhoneNumber();
+                  Thread.sleep(20000);
+                  applyOnlinePage2.clickSendApplication();
+
+              Thread.sleep(20000);
+              String screenshotPath3 = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath3));
+              Thread.sleep(20000);
+
+              if (applyOnlinePage2.getErrorMessage().equals("You need to upload at least one file")) {
+                  ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.PASS, "Error Message Exists");
+                  Assert.assertTrue(true);
+
+              } else {
+                  ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.FAIL, "Different Error Message exists: " + applyOnlinePage2.getErrorMessage());
+                  Assert.assertTrue(false);
+              }
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Link Clicked");
+              Thread.sleep(20000);
+              logger.info("Ending  Test : fillTheApplyOnlineForm Test");
+          }
+    /*      */
     @DataProvider(name = "data")
     public Object[][] getUserDetails() throws FileNotFoundException, IOException {
         String[][] data = new String[1][2];

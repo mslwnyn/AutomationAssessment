@@ -6,6 +6,7 @@ package za.co.ilab.tshimx.testcases;
  */
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
@@ -23,37 +24,41 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import za.co.ilab.tshimx.pageobjects.PageObjects;
-
-import za.co.ilab.tshimx.utils.ExtentManager;
 import za.co.ilab.tshimx.utils.ThreadLocalDriverFactory;
+import za.co.ilab.tshimx.utils.*;
 
 public class BaseTest {
     final static Logger logger = Logger.getLogger(BaseTest.class);
     protected WebDriverWait wait;
     protected Properties env_prop;
-    protected ExtentReports rep = ExtentManager.getInstance();
-    protected ExtentTest extentTest;    
-    protected  PageObjects actionKeywords;
-    protected  String keyword;
-    protected  Method method[];
+    protected PageObjects actionKeywords;
+    protected String keyword;
+    protected Method method[];
   
     @BeforeTest
     @Parameters({"browser"})
     public void setupTest(String browser) throws Exception {
         this.loadProperties();
+        logger.info("setupTest :  " + browser);
         if(browser.equals("chrome")){
              System.setProperty(env_prop.getProperty("chrome.webdriver.name"), env_prop.getProperty("chrome.webdriver.value"));
+             logger.info("Initializing the browser:  " + browser );
+             ThreadLocalDriverFactory.setThreadLocalDriver(browser);
+            // wait = new WebDriverWait(ThreadLocalDriverFactory.getThreadLocalDriver(), 10);
         }
         if(browser.equals("firefox")){
              System.setProperty(env_prop.getProperty("firefox.webdriver.name"), env_prop.getProperty("firefox.webdriver.value"));
+            logger.info("Initializing the browser:  " + browser );
+            ThreadLocalDriverFactory.setThreadLocalDriver(browser);
+            //wait = new WebDriverWait(ThreadLocalDriverFactory.getThreadLocalDriver(), 10);
         }
         if(browser.equals("ie")){
              System.setProperty(env_prop.getProperty("ie.webdriver.name"), env_prop.getProperty("ie.webdriver.value"));
-             ThreadLocalDriverFactory.setThreadLocalDriver(browser);
+            ThreadLocalDriverFactory.setThreadLocalDriver(browser);
+            logger.info("Initializing the browser:  " + browser );
+            ThreadLocalDriverFactory.setThreadLocalDriver(browser);
+            wait = new WebDriverWait(ThreadLocalDriverFactory.getThreadLocalDriver(), 10);
         }
-        ThreadLocalDriverFactory.setThreadLocalDriver(browser);
-        wait = new WebDriverWait(ThreadLocalDriverFactory.getThreadLocalDriver(), 10);
-        
 
     }
 
@@ -75,15 +80,14 @@ public class BaseTest {
         return destination;
     }
     
-    @AfterMethod
-    public void teardown () {      
-        rep.endTest(extentTest);
-        rep.flush();
-    }
-    
+
+    @Parameters({"browser"})
     @AfterClass
-    public void closeBrowser() {        
-        ThreadLocalDriverFactory.getThreadLocalDriver().quit();        
+    public void closeBrowser(String browser) {
+
+        ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Closed "+browser+" browser  Successfully : "  );
+        ThreadLocalDriverFactory.getThreadLocalDriver().quit();
+     
     }
     
     protected void execute_Actions(PageObjects base) throws Exception {
