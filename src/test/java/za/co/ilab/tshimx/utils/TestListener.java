@@ -34,10 +34,10 @@ public class TestListener implements ITestListener {
       
         ThreadLocalExtentReportFactory.setThreadLocalExtentReport();
         extent = ThreadLocalExtentReportFactory.getThreadLocalExtentReport();
-        ThreadLocalExtentTestFactory.setThreadLocalExtentTest(extent,result.getMethod().getMethodName() + ": started  ");
+        ThreadLocalExtentTestFactory.setThreadLocalExtentTest(extent,result.getMethod().getMethodName() );
         extentTest = ThreadLocalExtentTestFactory.getThreadLocalExtentTest();  
-        logger.info("*** TestListener : Sarting test method: " + result.getMethod().getMethodName()); 
-        extentTest.log(LogStatus.INFO, "Running test method: " + result.getMethod().getMethodName());
+        logger.info("*** TestListener : Starting test method: " + result.getMethod().getMethodName());
+        extentTest.log(LogStatus.INFO, "TestListener - Running test method: " + result.getMethod().getMethodName());
        
     }
 
@@ -45,7 +45,7 @@ public class TestListener implements ITestListener {
     public void onTestSuccess(ITestResult result) {
 
        logger.info("*** TestListener  : Executed " + result.getMethod().getMethodName() + ": Test Completed Successfully.");
-       extentTest.log(LogStatus.PASS, result.getMethod().getMethodName()  + ": Test Completed Successfully.") ;                                      //rep.startTest("");
+       extentTest.log(LogStatus.PASS, "TestListener :     "+ result.getMethod().getMethodName()  + ": Test Completed Successfully.") ;
        extent.endTest(extentTest);
        extent.flush();
     }   
@@ -54,7 +54,8 @@ public class TestListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         
         logger.info("*** TestListener : Test execution " + result.getMethod().getMethodName() + " failed...");
-        extentTest.log(LogStatus.FAIL, "Test has failed with an Unknown reason.....");                                //rep.startTest("onTestSuccess " );
+        extentTest.log(LogStatus.FAIL, "Test has failed "); 
+        extentTest.log(LogStatus.FAIL, result.getThrowable()); 
         extent.endTest(extentTest);
         extent.flush();
 
@@ -64,15 +65,16 @@ public class TestListener implements ITestListener {
         
         logger.info("*** TestListener : Test " + result.getMethod().getMethodName() + " skipped...");
         extentTest.log(LogStatus.INFO, result.getMethod().getMethodName() + " : is Skipped."); 
-        extentTest.log(LogStatus.SKIP, result.getThrowable());                                         //rep.startTest("onTestSuccess " );
+        extentTest.log(LogStatus.SKIP, result.getThrowable());                                        
         extent.endTest(extentTest);
         extent.flush();
        
     }
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-        ThreadLocalExtentReportFactory.setThreadLocalExtentReport();
-        //logger.info("*** Test failed but within percentage % " + result.getMethod().getMethodName());
+       extentTest.log(LogStatus.PASS, result.getMethod().getMethodName()  + ": Test within  success percentage.") ;                                     
+       extent.endTest(extentTest);
+       extent.flush();
         
     }
     

@@ -137,7 +137,7 @@ public class ApplyOnlineTest extends BaseTest {
           public void clickApplyOnlineLink() throws Exception {
 
               ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO,"ApplyOnlineTest: clickApplyOnlineLink Test " );
-              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "ApplyOnlineTest: clickApplyOnlineLink Test ");
+              ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, "Starting Test :  clickApplyOnlineLink Test ");
               logger.info("Starting Test : clickApplyOnlineLink Test");
               String screenshotPath = BaseTest.getScreenshot(ThreadLocalDriverFactory.getThreadLocalDriver(), "screenshot_");
               ThreadLocalExtentTestFactory.getThreadLocalExtentTest().log(LogStatus.INFO, ThreadLocalExtentTestFactory.getThreadLocalExtentTest().addScreenCapture(screenshotPath));

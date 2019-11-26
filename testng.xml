@@ -10,7 +10,6 @@
             <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
         </classes>
     </test>
-
     <test  name="AutomationAssessment - ApplyOnlineTest 02 : ">
         <parameter name="browser" value="chrome"/>
         <classes>
