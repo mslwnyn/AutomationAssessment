@@ -17,10 +17,11 @@ public class BrowserOptionsManager {
      
     public static ChromeOptions getChromeOptions() {
         ChromeOptions options = new ChromeOptions();
-        //options.setHeadless(true);
+        options.setHeadless(true);
         options.addArguments("--start-maximized");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
+        //options.addArguments("--whitelisted-ips");
         //options.addArguments("--headless");
         return options;
     }
@@ -30,12 +31,12 @@ public class BrowserOptionsManager {
         FirefoxOptions options = new FirefoxOptions();
         FirefoxProfile profile = new FirefoxProfile();
         //Accept Untrusted Certificates
-        profile.setAcceptUntrustedCertificates(true);
-        profile.setAssumeUntrustedCertificateIssuer(false);
+        //profile.setAcceptUntrustedCertificates(true);
+        //profile.setAssumeUntrustedCertificateIssuer(false);
         //Use No Proxy Settings
-        profile.setPreference("network.proxy.type", 0);
+        //profile.setPreference("network.proxy.type", 0);
         //Set Firefox profile to capabilities
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         options.setCapability(FirefoxDriver.PROFILE, profile);
         return options;
     }

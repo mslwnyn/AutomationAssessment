@@ -31,7 +31,7 @@ final static Logger logger = Logger.getLogger(HibernateDatabaseAccess.class);
             logger.info(person.getId() + " - " + person.getName());
         }
         session.getTransaction().commit();
-        sessionFactory.close();
+        //sessionFactory.close();
         return person;
     }
 

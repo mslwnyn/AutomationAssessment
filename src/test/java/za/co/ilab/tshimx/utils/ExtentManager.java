@@ -14,7 +14,7 @@ public class ExtentManager {
 
     private static ExtentReports extent;
     
-    public static ExtentReports getInstance() {
+    public  static ExtentReports getInstance() {
         if (extent == null) {
             String pattern = "yyyyMMddHHmm";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);

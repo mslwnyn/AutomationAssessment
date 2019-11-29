@@ -4,8 +4,6 @@ package za.co.ilab.tshimx.utils;
  *
  * @author Tshimologo
  */
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import org.apache.log4j.Logger;
 import org.testng.ITestContext;
@@ -16,77 +14,76 @@ import za.co.ilab.tshimx.testcases.ApplyOnlineTest;
 
 public class TestListener implements ITestListener {
 
- private static ExtentReports extent ;
- private static ExtentTest extentTest;
-  final static Logger logger = Logger.getLogger(ApplyOnlineTest.class);
+    final static Logger logger = Logger.getLogger(ApplyOnlineTest.class);
 
-   
+
     @Override
-    public void onStart(ITestContext context) {
-        
-        logger.info( "***  TestListener : Test Suite " + context.getName() );
-        
+    public synchronized void onStart(ITestContext context) {
+
+        logger.info("***  TestListener : Test Suite " + context.getName());
+
     }
-    
-    
-   @Override
-    public void onTestStart(ITestResult result) {
-      
+
+
+    @Override
+    public synchronized void onTestStart(ITestResult result) {
+
         ThreadLocalExtentReportFactory.setThreadLocalExtentReport();
-        extent = ThreadLocalExtentReportFactory.getThreadLocalExtentReport();
-        ThreadLocalExtentTestFactory.setThreadLocalExtentTest(extent,result.getMethod().getMethodName() );
-        extentTest = ThreadLocalExtentTestFactory.getThreadLocalExtentTest();  
+        ExtentTestManager.startTest( result.getMethod().getMethodName() );
         logger.info("*** TestListener : Starting test method: " + result.getMethod().getMethodName());
-        extentTest.log(LogStatus.INFO, "TestListener - Running test method: " + result.getMethod().getMethodName());
-       
+        ExtentTestManager.getTest().log(LogStatus.INFO, "TestListener - Running test method: " + result.getMethod().getMethodName());
+
     }
 
     @Override
-    public void onTestSuccess(ITestResult result) {
+    public synchronized void onTestSuccess(ITestResult result) {
 
-       logger.info("*** TestListener  : Executed " + result.getMethod().getMethodName() + ": Test Completed Successfully.");
-       extentTest.log(LogStatus.PASS, "TestListener :     "+ result.getMethod().getMethodName()  + ": Test Completed Successfully.") ;
-       extent.endTest(extentTest);
-       extent.flush();
-    }   
-    
+        logger.info("*** TestListener  : Executed " + result.getMethod().getMethodName() + ": Test Completed Successfully.");
+        ExtentTestManager.getTest().log(LogStatus.PASS, "TestListener :     " + result.getMethod().getMethodName() + ": Test Completed Successfully.");
+        ExtentManager.getInstance().flush();
+        ExtentTestManager.endTest();
+    }
+
     @Override
-    public void onTestFailure(ITestResult result) {
-        
+    public synchronized void onTestFailure(ITestResult result) {
+
         logger.info("*** TestListener : Test execution " + result.getMethod().getMethodName() + " failed...");
-        extentTest.log(LogStatus.FAIL, "Test has failed "); 
-        extentTest.log(LogStatus.FAIL, result.getThrowable()); 
-        extent.endTest(extentTest);
-        extent.flush();
+        ExtentTestManager.getTest().log(LogStatus.FAIL, " Test has failed ");
+        ExtentTestManager.getTest().log(LogStatus.FAIL, result.getThrowable());
+        ExtentManager.getInstance().flush();
+        ExtentTestManager.endTest();
+        
 
     }
-   @Override
-    public void onTestSkipped(ITestResult result) {
-        
+
+    @Override
+    public synchronized void onTestSkipped(ITestResult result) {
+
         logger.info("*** TestListener : Test " + result.getMethod().getMethodName() + " skipped...");
-        extentTest.log(LogStatus.INFO, result.getMethod().getMethodName() + " : is Skipped."); 
-        extentTest.log(LogStatus.SKIP, result.getThrowable());                                        
-        extent.endTest(extentTest);
-        extent.flush();
+        ExtentTestManager.getTest().log(LogStatus.INFO, Thread.currentThread().getName()+": "  + result.getMethod().getMethodName() + " : is Skipped.");
+        ExtentTestManager.getTest().log(LogStatus.SKIP, result.getThrowable());
+        ExtentManager.getInstance().flush();
+        ExtentTestManager.endTest();
+
+    }
+
+    @Override
+    public synchronized void onTestFailedButWithinSuccessPercentage(ITestResult result) {
        
-    }
-    @Override
-    public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-       extentTest.log(LogStatus.PASS, result.getMethod().getMethodName()  + ": Test within  success percentage.") ;                                     
-       extent.endTest(extentTest);
-       extent.flush();
-        
+        ExtentTestManager.getTest().log(LogStatus.PASS, result.getMethod().getMethodName() + ": Test within  success percentage.");
+        ExtentManager.getInstance().flush();
+        ExtentTestManager.endTest();
+     
     }
     
     
     @Override
-    public void onFinish(ITestContext context) {
+    public  synchronized  void onFinish(ITestContext context) {
 
         logger.info("*** TestListener : Test Suite " + context.getName().toString() + " ended ***");
-        ThreadLocalExtentReportFactory.getThreadLocalExtentReport().flush();
+        //ExtentTestManager.getTest().log(LogStatus.INFO,  context.getName() + " : OnFinish executed on Machine: " + context.getHost());
+        ExtentManager.getInstance().flush();
         
     }
-
-
 
 }

@@ -1,21 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite" parallel="none" >
+<suite name="All Test Suite" parallel="tests"   thread-count="12"  >
     <listeners>
         <listener class-name="za.co.ilab.tshimx.utils.TestListener"/>
     </listeners>
-    <test  name="AutomationAssessment - ApplyOnlineTest 01 : " >
+
+
+    <test  name="AutomationAssessment - ApplyOnlineTest 01 : " preserve-order="true" >
         <parameter name="browser" value="firefox"/>
         <classes>
             <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
         </classes>
     </test>
-    <test  name="AutomationAssessment - ApplyOnlineTest 02 : ">
-        <parameter name="browser" value="chrome"/>
+    <test  name="AutomationAssessment - ApplyOnlineTest 02 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
         <classes>
             <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
         </classes>
     </test>
+    <!--test  name="AutomationAssessment - ApplyOnlineTest 03 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 04 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+
+    <test  name="AutomationAssessment - ApplyOnlineTest 05 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 06 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 07 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 08 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 09 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 10 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 11 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test>
+    <test  name="AutomationAssessment - ApplyOnlineTest 12 : " preserve-order="true" >
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="za.co.ilab.tshimx.testcases.ApplyOnlineTest"/>
+        </classes>
+    </test-->
 
 
 </suite>
